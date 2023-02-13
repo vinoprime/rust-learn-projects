@@ -119,6 +119,159 @@ fn print_drink(drink: Drink) {
 }
 // Basics
 
+/* DEMO Expressions*/
+enum Access {
+    ADMIN,
+    MANAGER,
+    USER,
+    GUEST,
+}
+
+fn print_msg(gt_100: bool) {
+    match gt_100 {
+        true => println!("big"),
+        _ => println!("small"),
+    };
+}
+
+/* Ownership */
+enum Light {
+    BRIGHT,
+    DULL,
+}
+
+fn display_light(light: &Light) {
+    match light {
+        Light::BRIGHT => println!("Bright"),
+        Light::DULL => println!("Dull"),
+    };
+}
+
+struct Book {
+    pages: i32,
+    rating: i32,
+}
+
+fn display_page_count(book: &Book) {
+    println!("Pages {:?}", book.pages);
+}
+
+fn display_rating(book: &Book) {
+    println!("Rating {:?}", book.rating);
+}
+
+/* IMPL */
+struct Temperature {
+    degrees_f: f64,
+}
+
+impl Temperature {
+    fn freezing() -> Self {
+        Self { degrees_f: 32.0 }
+    }
+
+    fn show_temp(&self) {
+        println!("Temperature {:?}", self.degrees_f);
+    }
+}
+
+/* Shipping Box */
+enum Color {
+    BROWN,
+    RED,
+    GREEN,
+}
+
+impl Color {
+    fn print(&self) {
+        match self {
+            Color::BROWN => println!("brown"),
+            Color::RED => println!("red"),
+            Color::GREEN => println!("green"),
+        };
+    }
+}
+
+struct Dimensions {
+    width: f64,
+    height: f64,
+    depth: f64,
+}
+
+impl Dimensions {
+    fn print(&self) {
+        println!("Width: {:?}", self.width);
+        println!("Height: {:?}", self.height);
+        println!("Depth: {:?}", self.depth);
+    }
+}
+
+struct ShippingBox {
+    color: Color,
+    dimensions: Dimensions,
+    weight: f64,
+}
+
+impl ShippingBox {
+    fn new(weight: f64, color: Color, dimensions: Dimensions) -> Self {
+        Self {
+            color,
+            weight,
+            dimensions,
+        }
+    }
+
+    fn print(&self) {
+        self.color.print();
+        self.dimensions.print();
+    }
+}
+
+fn ship_main() {
+    let small_dimensions = Dimensions {
+        width: 10.0,
+        height: 20.0,
+        depth: 5.0,
+    };
+
+    let small_box = ShippingBox::new(5.0, Color::RED, small_dimensions);
+    small_box.print();
+
+    let big_dimensions = Dimensions {
+        width: 100.0,
+        height: 200.0,
+        depth: 10.0,
+    };
+
+    let big_box = ShippingBox::new(25.0, Color::GREEN, big_dimensions);
+    big_box.print();
+}
+
+/* Vector */
+struct Test {
+    score: i32,
+}
+
+fn vec() {
+    let my_scores = vec![Test { score: 10 }, Test { score: 20 }, Test { score: 30 }];
+    for test in my_scores {
+        println!("{:?}", test.score);
+    }
+}
+
+fn vec_1() {
+
+    let my_numbers = vec![10, 20, 30, 40, 50];
+
+    for num in &my_numbers {
+        match num {
+            30 => println!("Thirty"),
+            _ => println!("{:?}", num),
+        };
+    }
+    println!("{:?}", my_numbers.len());
+}
+
 fn main() {
     // basics();
     // basics_loop();
@@ -147,16 +300,57 @@ fn main() {
     // print_drink(fruity);
 
     // Tuples
-    let coord = (2, 3);
-    let (x, y) = (2, 3);
-    let (name, age) = ("Vino", 34);
-    println!("{:?} {:?}", coord.0, coord.1);
-    println!("{:?} {:?}", x, y);
-    println!("{:?} {:?}", name, age);
+    // let coord = (2, 3);
+    // let (x, y) = (2, 3);
+    // let (name, age) = ("Vino", 34);
+    // println!("{:?} {:?}", coord.0, coord.1);
+    // println!("{:?} {:?}", x, y);
+    // println!("{:?} {:?}", name, age);
 
-    // let result = add(10, 5);
-    // display_result(result);
+    /* Expressions */
+    // let my_num = 3;
+    // let is_lt_5 = if my_num < 5 {
+    //     true;
+    // } else {
+    //     false;
+    // };
 
-    // let val = false;
-    // display_hello(val);
+    // let msg = match my_num {
+    //     1 => "Hello",
+    //     _ => "bye",
+    // };
+
+    // let access_level = Access::GUEST;
+    // let can_access_file = match access_level {
+    //     Access::ADMIN => true,
+    //     _ => false,
+    // };
+    // println!("{:?}", can_access_file);
+
+    // let value = 100;
+    // let is_gt_100 = value > 100;
+    // print_msg(is_gt_100);
+
+    // let dull = Light::DULL;
+    // display_light(&dull);
+    // display_light(&dull);
+
+    // let book = Book {
+    //     pages: 5,
+    //     rating: 9,
+    // };
+    // display_page_count(&book);
+    // display_rating(&book);
+
+    /* IMPL */
+    // let hot = Temperature { degrees_f: 99.69 };
+    // hot.show_temp();
+    // let cold = Temperature::freezing();
+    // cold.show_temp();
+    // cold.show_temp();
+    // hot.show_temp();
+
+    // ship_main();
+    // vec();
+    vec_1();
 }
