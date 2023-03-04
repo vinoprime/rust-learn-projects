@@ -66,12 +66,103 @@ fn call() {
 
     for tkt in tickets {
         match tkt {
-            TicketE::Backstage(price, holder) => println!("Backstage price: {:?}, holder: {:?}", price, holder),
-            TicketE::Standard(price) => println!("Standard price: {:?}",price),
+            TicketE::Backstage(price, holder) => {
+                println!("Backstage price: {:?}, holder: {:?}", price, holder)
+            }
+            TicketE::Standard(price) => println!("Standard price: {:?}", price),
+            TicketE::Vip(price, holder) => println!("Vip price: {:?}, price {:?}", holder, price),
+        };
     }
 }
+
+// Options
+// enum Option<T> {
+//     some(T),
+//     None,
+// }
+
+struct Customer {
+    age: Option<i32>,
+    email: String,
+}
+
+struct Survey {
+    q1: Option<i32>,
+    q2: Option<bool>,
+    q3: Option<String>,
+}
+
+fn callOption() {
+    let response = Survey {
+        q1: Some(10),
+        q2: Some(true),
+        q3: Some("A".to_owned()),
+    };
+
+    match response.q1 {
+        Some(ans) => println!("q1 ans is {:?}", ans),
+        None => println!("None"),
+    };
+
+    match response.q2 {
+        Some(ans) => println!("q2 ans is {:?}", ans),
+        None => println!("None"),
+    };
+
+    match response.q3 {
+        Some(ans) => println!("q3 ans is {:?}", ans),
+        None => println!("None"),
+    };
+}
+
+// Documentation
+/// A favorite color.
+enum Color {
+    Red,
+    Blue,
+}
+
+
+/// A piece of mail.
+struct Mail {
+    address: String,
+}
+
+
+/// Adds two numbers together.
+fn add(a: i32, b: i32) -> i32 {
+    return a + b;
+}
+
+
+
 
 fn main() {
     // derive_call();
     // call_annotations();
+    // call();
+
+    // let vinoth = Customer {
+    //     age: Some(22),
+    //     email: "Vinoth@mail.com".to_owned(),
+    // };
+
+    // let v = Customer {
+    //     age: Some(35),
+    //     email: "V@mail.com".to_owned(),
+    // };
+
+    // match v.age {
+    //     Some(age)=> println!("customer is {:?} years old", age),
+    //     None=> println!("customer age not provides")
+    // };
+
+
+
+    let my_str = "This is string";
+    println!("value is {:?}", my_str.to_lowercase());
+    println!("value is {:?}", my_str.to_uppercase());
+
+
+
 }

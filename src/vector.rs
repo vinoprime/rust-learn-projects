@@ -10,6 +10,15 @@ fn vec() {
     }
 }
 
+fn vec_2(){
+    let numbers = vec![1,2,3];
+    match numbers.is_empty(){
+        true => println!("no numbers"),
+        false => println!("has numbers"),
+    }
+}
+
+
 fn vec_1() {
     let my_numbers = vec![10, 20, 30, 40, 50];
 
