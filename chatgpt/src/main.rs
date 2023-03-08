@@ -74,11 +74,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
             .unwrap();
 
         let res = client.request(req).await?;
+        println!("---");
         let body = hyper::body::aggregate(res).await?;
+        println!("---");
         let json:OpenAIResponse = serde_json::from_reader(body.reader())?;
+        println!("-----");
         // sp.stop();
         println!("");
-        println!("{}", json.choices[0].text);
+        println!("{:?}", json.choices[0].text);
     }
 
     Ok(())
