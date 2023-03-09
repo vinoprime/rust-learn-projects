@@ -122,20 +122,24 @@ enum Color {
     Blue,
 }
 
-
 /// A piece of mail.
 struct Mail {
     address: String,
 }
-
 
 /// Adds two numbers together.
 fn add(a: i32, b: i32) -> i32 {
     return a + b;
 }
 
+// Box
 
+enum List {
+    Cons(i32, Box<List>),
+    Nil,
+}
 
+use List::{Cons, Nil};
 
 fn main() {
     // derive_call();
@@ -157,9 +161,8 @@ fn main() {
     //     None=> println!("customer age not provides")
     // };
 
+    let b = Box::new(5);
+    print!("{:?}", b);
 
-
-
-
-
+    let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil))))));
 }
