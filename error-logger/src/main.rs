@@ -20,7 +20,6 @@ struct PostResponse {
 
 async fn create_post(data: web::Json<PostData>) -> Result<HttpResponse> {
 
-    println!("jhgfh");
 
     let mut rng = rand::thread_rng();
     let range = Uniform::new_inclusive(1, 100);
@@ -47,7 +46,7 @@ async fn index() -> impl Responder {
 
 async fn get_post_by_id(info: web::Path<usize>) -> Result<HttpResponse> {
     // Serialize the post and return it as JSON
-    Ok(HttpResponse::Ok().json({"df".to_owned()}))
+    Ok(HttpResponse::Ok().json({}))
 }
 
 #[actix_web::main]
