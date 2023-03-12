@@ -1,46 +1,69 @@
+use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 use dotenv::dotenv;
-use futures::stream::TryStreamExt;
-use mongodb::bson::{doc, Document};
-use mongodb::options::FindOptions;
-use serde::{Deserialize, Serialize};
-
+use futures::FutureExt;
+use serde::Serialize;
 use std::env;
-use tokio;
 
 #[path = "./db/mongo_db.rs"]
 mod mongo_db;
 
-#[derive(Debug, Serialize, Deserialize)]
-struct Book {
-    title: String,
-    author: String,
+#[path = "./middlewares/auth_middleware.rs"]
+mod my_middleware;
+
+#[derive(Serialize)]
+struct ResponseData {
+    list: Vec<String>,
 }
 
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+// #[get("/")]
+// async fn hello() -> impl Responder {
+//     HttpResponse::Ok().body("Hello world!")
+// }
+
+#[post("/echo")]
+async fn echo(req_body: String) -> impl Responder {
+    HttpResponse::Ok().body(req_body)
+}
+
+async fn post_log_data(req_body: String) -> impl Responder {
+    HttpResponse::Ok().json(req_body)
+}
+
+async fn manual_hello() -> impl Responder {
     dotenv().ok();
     let MONGO_DB_URL = env::var("MONGO_DB_URL").unwrap();
     let DB_NAME = env::var("DB_NAME").unwrap();
 
-    let client = mongo_db::connect(MONGO_DB_URL).await?;
+    let client = mongo_db::connect(MONGO_DB_URL)
+        .await
+        .expect("Some error message");
+    let dbList = mongo_db::gell_all_db(&client)
+        .await
+        .expect("Some error message");
 
-    let dbList = mongo_db::gell_all_db(&client).await?;
+    let response_data = ResponseData { list: dbList };
 
-    for db_name in dbList {
-        println!("{}", db_name);
-    }
+    HttpResponse::Ok().json(response_data)
+}
 
-    let selected_db = mongo_db::select_db(&client, &DB_NAME).await?;
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    // dotenv().ok();
+    // let MONGO_DB_URL = env::var("MONGO_DB_URL").unwrap();
+    // let DB_NAME = env::var("DB_NAME").unwrap();
 
-    let col: mongodb::Collection<()> = selected_db.collection("books");
+    // let client = mongo_db::connect(MONGO_DB_URL).await.expect("Some error message");
+    // let dbList = mongo_db::gell_all_db(&client).await.expect("Some error message");
 
-    // Query the books in the collection with a filter and an option.
-    let filter = doc! { "author": "George Orwell" };
-
-    let find_options = FindOptions::builder().sort(doc! { "title": 1 }).build();
-    let mut result = col.find(filter, find_options).await?;
-
-
-
-    Ok(())
+    HttpServer::new(|| {
+        App::new()
+            // .wrap_fn(my_middleware::auth())
+            // .service(hello)
+            // .service(echo)
+            .route("/", web::get().to(manual_hello))
+            .route("/", web::post().to(post_log_data))
+    })
+    .bind(("127.0.0.1", 8080))?
+    .run()
+    .await
 }

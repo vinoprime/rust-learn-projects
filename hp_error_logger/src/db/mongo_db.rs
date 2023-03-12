@@ -1,7 +1,9 @@
 use mongodb::{options::ClientOptions, Client, Database};
 
-pub fn print_hello() {
+
+pub async fn print_hello()->Result<(), String> {
     println!("Hello, world!");
+    Ok(())
 }
 
 pub async fn connect(url: String) -> Result<Client, mongodb::error::Error> {
@@ -15,6 +17,7 @@ pub async fn connect(url: String) -> Result<Client, mongodb::error::Error> {
 pub async fn gell_all_db(client: &Client) -> Result<Vec<String>, mongodb::error::Error> {
     // List the names of the databases in that deployment.
     let list = client.list_database_names(None, None).await?;
+    print!("sds");
     Ok(list)
 }
 
