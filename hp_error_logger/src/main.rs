@@ -4,6 +4,10 @@ use futures::FutureExt;
 use serde::Serialize;
 use std::env;
 
+
+mod config;
+
+
 #[path = "./db/mongo_db.rs"]
 mod mongo_db;
 
@@ -48,12 +52,7 @@ async fn manual_hello() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // dotenv().ok();
-    // let MONGO_DB_URL = env::var("MONGO_DB_URL").unwrap();
-    // let DB_NAME = env::var("DB_NAME").unwrap();
 
-    // let client = mongo_db::connect(MONGO_DB_URL).await.expect("Some error message");
-    // let dbList = mongo_db::gell_all_db(&client).await.expect("Some error message");
 
     HttpServer::new(|| {
         App::new()
@@ -66,4 +65,8 @@ async fn main() -> std::io::Result<()> {
     .bind(("127.0.0.1", 8080))?
     .run()
     .await
+
+
+
+
 }
