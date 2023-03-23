@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  rust_web:
+    image: rust_web:1.0.0
+    build: ./
+    container_name: rust_web
+    ports:
+      - "8080:80"
+    networks:
+      - proxy_net
+
+
+networks:
+  proxy_net:
+    external: true
