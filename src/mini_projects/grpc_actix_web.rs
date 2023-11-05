@@ -3,7 +3,9 @@ use tonic::{ transport::Server, Request, Response, Status };
 use tokio::runtime::Runtime;
 use std::thread;
 use std::time::Duration;
+use tonic::transport::Channel;
 
+// For gRPC server
 use payments::bitcoin_server::{ Bitcoin, BitcoinServer };
 use payments::{ BtcPaymentResponse, BtcPaymentRequest };
 
@@ -61,15 +63,47 @@ pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     });
 
-    // create a thread
-    thread::spawn(|| {
-        // everything in here runs in a separate thread
+    let client_rt = Runtime::new().unwrap();
+    client_rt.spawn(async move {
+        // For gRPC client
+        // everything in here runs in a separate tokio runtime
+        use payments::bitcoin_client::BitcoinClient;
+
+        let mut client = BitcoinClient::connect("http://[::1]:50051").await.unwrap();
+
         for i in 1..=5 {
-            println!("hi number {} from the spawned thread!", i);
-            thread::sleep(Duration::from_millis(1));
+            let req = tonic::Request::new(BtcPaymentRequest {
+                from_addr: "123456".to_owned(),
+                to_addr: "1789".to_owned(),
+                amount: i,
+            });
+
+            println!("{:?}", req);
+            let res = client.send_payment(req).await.unwrap();
+            println!("Response : {:?}", res);
         }
     });
 
+    // create a thread
+    // thread::spawn(|| {
+    //     println!("Thread called");
+    //     // everything in here runs in a separate thread
+    //     // for i in 1..=5 {
+    //     //     println!("hi number {} from the spawned thread!", i);
+    //     //     thread::sleep(Duration::from_millis(1));
+    //     // }
+    // });
+
+    // let mut client = BitcoinClient::connect("http://[::1]:50051").await?;
+    // let req = tonic::Request::new(BtcPaymentRequest {
+    //     from_addr: "123456".to_owned(),
+    //     to_addr: "1789".to_owned(),
+    //     amount: 100,
+    // });
+
+    // println!("{:?}", req);
+    // let res = client.send_payment(req).await?;
+    // println!("Response : {:?}", res);
 
     let addr = "0.0.0.0:8080";
     println!("Server running at http://{}", addr);
