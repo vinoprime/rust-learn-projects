@@ -1,3 +1,14 @@
+/*
+Expressions:
+
+Rust is an expression-based language. 
+Most things are evaluated and return some value.
+Expression values coalesce to 
+Expressions allowed nested logic
+
+*/
+
+
 fn coordinate() -> (i32, i32) {
     return (50, 5);
 }

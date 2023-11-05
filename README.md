@@ -15,5 +15,3 @@ $ cargo check --bin <file.rs>
 $ cargo install cargo-modules
 $ cargo modules generate tree
 $ cargo modules generate tree --with-types
-
-![Alt text](image.png)
