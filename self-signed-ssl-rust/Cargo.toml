@@ -1,0 +1,11 @@
+[package]
+name = "self-signed-ssl-rust"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = "0.8.4"
+axum-server = { version = "0.7.2", features = ["tls-rustls"] }
+rcgen = "0.14.1"
+rustls = { version = "0.23.28", features = ["ring"] }
+tokio = { version = "1.46.0", features = ["full"] }
