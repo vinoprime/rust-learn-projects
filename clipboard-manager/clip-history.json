@@ -1,0 +1,1 @@
+{"items":["# with npm\r\nnpm install --save-dev @tauri-apps/cli\r\n\r\n# or with yarn\r\nyarn add --dev @tauri-apps/cli\r\n\r\n# or with pnpm\r\npnpm add -D @tauri-apps/cli\r\n"]}

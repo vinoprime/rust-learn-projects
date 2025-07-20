@@ -9,8 +9,9 @@ use std::path::PathBuf;
 
 fn generate_self_signed_ssl_certificate() {
     let names = vec![String::from("localhost")];
+    let x = String::from("localhost");
 
-    let certificate_key = generate_simple_self_signed(names).unwrap();
+    let certificate_key = generate_simple_self_signed(x).unwrap();
 
     let certificate = certificate_key.cert;
     let key = certificate_key.signing_key;
